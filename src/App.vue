@@ -3,7 +3,8 @@
 </script>
 
 <template>
- <el-button type="info">Info</el-button>
+  <!-- 一级路由出口组件 -->
+  <RouterView />
 </template>
 
 <style scoped>
