@@ -5,9 +5,16 @@
 <template>
   <!-- 一级路由出口组件 -->
   <RouterView />
+    <div class="test">
+      我是test导入var.scss用的
+    </div>
 </template>
 
-<style scoped>
+<style scoped lang = 'scss'>
+.test {
+  color: $priceColor
+}
+
 header {
   line-height: 1.5;
   max-height: 100vh;
