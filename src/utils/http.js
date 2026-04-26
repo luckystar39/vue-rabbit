@@ -1,7 +1,7 @@
 // axios基础的封装
 import axios from 'axios'
 
-const httpInstance = axios.create({
+export const httpInstance = axios.create({
   baseURL: 'http://pcapi-xiaotuxian-front-devtest.itheima.net',
   timeout: 500
 })
