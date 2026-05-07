@@ -3,7 +3,7 @@ import axios from 'axios'
 
 export const httpInstance = axios.create({
   baseURL: 'http://pcapi-xiaotuxian-front-devtest.itheima.net',
-  timeout: 500
+  timeout: 1000
 })
 
 export default httpInstance
