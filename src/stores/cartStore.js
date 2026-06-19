@@ -1,10 +1,11 @@
 // 封装购物车模块
 
+
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import { computed } from "vue";
 import { useUserStore } from "./userStore";
-import { insertCartAPI, findNewCartListAPI, delCartAPI} from "@/apis/cart";
+import { insertCartAPI, findNewCartListAPI, delCartAPI,updateCartAPI} from "@/apis/cart";
 export const useCartStore = defineStore('cart', () => {
   const userStore = useUserStore()
   const islogin = computed(() => userStore.userInfo.token)
@@ -43,7 +44,7 @@ export const useCartStore = defineStore('cart', () => {
     if (islogin.value) {
       // 调用接口实现接口购物车中的删除功能
       await delCartAPI([skuId])
-      updateNewList()
+      await updateNewList()
     } else {
       // 思路：
       // 1. 找到要删除想的下标值 - splice
@@ -53,14 +54,22 @@ export const useCartStore = defineStore('cart', () => {
     }
   }
 
-
+// 清除购物车
+const clearCart = () => {
+  cartList.value = []
+}
 
 // 单选功能
-const singleCheck = (skuId, selected) => {
-  //通过skuId找到要修改的那一项 然后把它的selected修改为传过来的selected
-  const item = cartList.value.find((item)=>item.skuId === skuId)
-  item.selected = selected
+const singleCheck = async (skuId, selected) => {
+  const item = cartList.value.find((item) => item.skuId === skuId)
+  if (islogin.value) {
+    await updateCartAPI(skuId, { selected, count: item.count })
+    await updateNewList()
+  } else {
+    item.selected = selected
+  }
 }
+
 
 // 全选功能
 const allCheck = (selected) => {
@@ -91,10 +100,12 @@ const isAll = computed(() => cartList.value.every((item) => item.selected))
     isAll,
     selectedCount,
     selectedPrice,
+    clearCart,
     addCart,
     delCart,
     singleCheck,
     allCheck,
+    updateNewList,
   }
 },{
   persist:true
